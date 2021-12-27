@@ -1,18 +1,28 @@
 const durationInput = document.querySelector("#duration");
 const startButton = document.querySelector("#start");
 const pauseButton = document.querySelector("#pause");
-
+const circle = document.querySelector("circle");
+const peremeter = circle.getAttribute("r") * 2 * Math.PI;
+circle.setAttribute("stroke-dasharray", peremeter);
+let currentOffset = 0;
+let duration;
 const timer = new Timer(durationInput, startButton, pauseButton, {
-  onStart() {
+  onStart(totalDuration) {
+    duration = totalDuration;
     console.log("timer started");
   },
-  onTick() {
-    console.log("timer just ticked down");
+  onTick(timeRemaining) {
+    circle.setAttribute(
+      "stroke-dashoffset",
+      (peremeter * timeRemaining) / duration - peremeter
+    );
+    currentOffset = currentOffset - 1;
   },
   onComplete() {
     console.log("timer is completed");
   },
 });
+
 //timer.start();
 
 //Determining the value of 'this'
